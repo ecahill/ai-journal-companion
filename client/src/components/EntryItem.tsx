@@ -1,4 +1,5 @@
-import React from 'react'
+import React from 'react';
+import '../App.css';
 
 type Entry = {
     id: number;
@@ -11,7 +12,7 @@ interface EntryItemProps {
 }
 
 const EntryItem: React.FC<EntryItemProps> = ({ entry }) => (
-    <div>
+    <div className="entry-item">
         <p><strong>Your Entry:</strong> {entry.text}</p>
         {entry.aiInsight ? (
             <p><strong>AI Insight:</strong> {entry.aiInsight}</p>

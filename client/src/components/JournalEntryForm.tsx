@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { addEntry } from '../redux/journalSlice';
 import { useDispatch } from 'react-redux';
+import '../App.css'
 
 const JournalEntryForm = () => {
     const [text, setText] = useState('');
@@ -15,12 +16,14 @@ const JournalEntryForm = () => {
     };
 
     return (
-       <form onSubmit={handleSubmit}>
-        <textarea value={text}
-        onChange={(e) => setText(e.target.value)}
-        placeholder="Write your journal entry..." />
-        <button type="submit">Submit</button>
-       </form>
+        <div className="journal-form">
+            <form onSubmit={handleSubmit}>
+                <textarea value={text}
+                onChange={(e) => setText(e.target.value)}
+                placeholder="Write your journal entry..." />
+                <button type="submit">Submit</button>
+            </form>
+       </div>
     );
 
 };
