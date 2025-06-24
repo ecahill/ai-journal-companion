@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 interface Entry {
     id: number;
@@ -14,12 +14,17 @@ const initialState: JournalState = {
     entries: [],
 }
 
+let nextId = 1;
+
 const journalSlice = createSlice({
     name: 'journal',
     initialState,
     reducers: {
-        addEntry: (state, action) => {
-            state.entries.push(action.payload);
+        addEntry: (state, action: PayloadAction<string>) => {
+            state.entries.unshift({
+                id: nextId++,
+                text: action.payload,
+            });
         },
         setAIInsight: (state, action) => {
             const { id, aiInsight } = action.payload;

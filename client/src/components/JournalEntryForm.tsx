@@ -6,16 +6,21 @@ const JournalEntryForm = () => {
     const [text, setText] = useState('');
     const dispatch = useDispatch();
 
-    const handleSubmit = () => {
-        dispatch(addEntry(text));
-        setText('');
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (text.trim()) {
+            dispatch(addEntry(text));
+            setText('');
+        }
     };
 
     return (
-        <div>
-            <textarea value={text} onChange={(e) => setText(e.target.value)} />
-                <button onClick={handleSubmit}>Submit Entry</button>
-        </div>
+       <form onSubmit={handleSubmit}>
+        <textarea value={text}
+        onChange={(e) => setText(e.target.value)}
+        placeholder="Write your journal entry..." />
+        <button type="submit">Submit</button>
+       </form>
     );
 
 };
