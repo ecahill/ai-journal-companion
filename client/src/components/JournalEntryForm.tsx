@@ -8,14 +8,12 @@ const JournalEntryForm = () => {
     const [text, setText] = useState('');
     const dispatch = useDispatch<AppDispatch>();
 
-    let nextId = 1;
-
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         if (text.trim()) {
-            let id = nextId++;
-            dispatch(addEntry({ id: nextId, text }));
-            dispatch(generateInsight(nextId));
+            const newEntryId = Date.now();
+            dispatch(addEntry({ id: newEntryId, text }));
+            dispatch(generateInsight(newEntryId));
             setText('');
         }
     };

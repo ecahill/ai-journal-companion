@@ -39,8 +39,11 @@ const journalSlice = createSlice({
             const entry = state.entries.find(e => e.id === entryId);
             if (entry) entry.aiInsight = aiInsight;
         },
+        deleteEntry: (state, action) => {
+            state.entries = state.entries.filter(entry => entry.id !== action.payload);
+        },
     },
 });
 
-export const { addEntry, setAiInsight } = journalSlice.actions;
+export const { addEntry, setAiInsight, deleteEntry } = journalSlice.actions;
 export default journalSlice.reducer;

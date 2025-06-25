@@ -11,7 +11,7 @@ interface EntryItemProps {
     entry: Entry;
 }
 
-const EntryItem: React.FC<EntryItemProps> = ({ entry }) => (
+const EntryItem: React.FC<EntryItemProps & { onDelete: (id: number) => void }> = ({ entry, onDelete }) => (
     <div className="entry-item">
         <p><strong>Your Entry:</strong> {entry.text}</p>
         {entry.aiInsight ? (
@@ -19,6 +19,7 @@ const EntryItem: React.FC<EntryItemProps> = ({ entry }) => (
         ) : (
             <p>Loading AI Response...</p>
         )}
+        <button className="delete-button" onClick={() => onDelete(entry.id)}>Delete</button>
     </div>
 );
 
