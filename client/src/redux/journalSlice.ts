@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 interface Entry {
     id: number;
@@ -14,25 +14,33 @@ const initialState: JournalState = {
     entries: [],
 }
 
-let nextId = 1;
+export const generateInsight = createAsyncThunk(
+    'journal/generateInsight',
+    async (entryId: number, { getState, dispatch }) => {
+        // Simulate API delay
+        await new Promise((resolve) => setTimeout(resolve, 1500));
+        const fakeInsight = "This entry reflects a thoughtful moment of self-reflection.";
+        dispatch(setAiInsight({ entryId, aiInsight: fakeInsight }));
+    }
+);
 
 const journalSlice = createSlice({
     name: 'journal',
     initialState,
     reducers: {
-        addEntry: (state, action: PayloadAction<string>) => {
+        addEntry: (state, action: PayloadAction<{ id: number, text: string }>) => {
             state.entries.unshift({
-                id: nextId++,
-                text: action.payload,
+                id: action.payload.id,
+                text: action.payload.text,
             });
         },
-        setAIInsight: (state, action) => {
-            const { id, aiInsight } = action.payload;
-            const entry = state.entries.find(e => e.id === id);
+        setAiInsight: (state, action) => {
+            const { entryId, aiInsight } = action.payload;
+            const entry = state.entries.find(e => e.id === entryId);
             if (entry) entry.aiInsight = aiInsight;
         },
     },
 });
 
-export const { addEntry, setAIInsight } = journalSlice.actions;
+export const { addEntry, setAiInsight } = journalSlice.actions;
 export default journalSlice.reducer;

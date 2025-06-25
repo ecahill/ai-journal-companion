@@ -1,16 +1,21 @@
 import React, { useState } from 'react';
-import { addEntry } from '../redux/journalSlice';
+import { addEntry, generateInsight } from '../redux/journalSlice';
 import { useDispatch } from 'react-redux';
 import '../App.css'
+import type { AppDispatch } from '../redux/store';
 
 const JournalEntryForm = () => {
     const [text, setText] = useState('');
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<AppDispatch>();
+
+    let nextId = 1;
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         if (text.trim()) {
-            dispatch(addEntry(text));
+            let id = nextId++;
+            dispatch(addEntry({ id: nextId, text }));
+            dispatch(generateInsight(nextId));
             setText('');
         }
     };
