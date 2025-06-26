@@ -1,22 +1,22 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import { Configuration, OpenAIApi } from 'openai';
+import OpenAI from 'openai';
+import { Request, Response } from 'express';
 
 dotenv.config();
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-const configuration = new Configuration({
-    apiKey: process.env.OPEN_AI_API_KEY,
+const openAi = new OpenAI({
+    apiKey: process.env.OPEN_AI_API_KEY!,
 });
-const openAi = new OpenAIApi(configuration);
 
-app.post('/api/insight', async (req, res) => {
+app.post('/api/insight', async (req: Request, res: Response) => {
     const { text } = req.body;
     try {
-        const response = await openAi.createChatCompletion({
+        const response = await openAi.chat.completions.create({
             model: 'gpt-3.5-turbo',
             messages: [
                 {
@@ -30,7 +30,7 @@ app.post('/api/insight', async (req, res) => {
             ],
         });
 
-        const aiInsight = response.data.choices[0].message?.content;
+        const aiInsight = response.choices[0].message.content;
         res.json({ aiInsight });
     } catch (error) {
         console.error('OpenAI error:',  error);
