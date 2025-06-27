@@ -10,11 +10,12 @@ app.use(cors());
 app.use(express.json());
 
 const openAi = new OpenAI({
-    apiKey: process.env.OPEN_AI_API_KEY!,
+    apiKey: process.env.OPENAI_API_KEY!,
 });
 
-app.post('/api/insight', async (req: Request, res: Response) => {
+app.post('/api/insight', async (req: Request, res: Response) => {  
     const { text } = req.body;
+
     try {
         const response = await openAi.chat.completions.create({
             model: 'gpt-3.5-turbo',
@@ -32,10 +33,10 @@ app.post('/api/insight', async (req: Request, res: Response) => {
 
         const aiInsight = response.choices[0].message.content;
         res.json({ aiInsight });
-    } catch (error) {
-        console.error('OpenAI error:',  error);
+    } catch (error: any) {
+        console.error('OpenAI API error:', error.response?.data || error.message || error);
         res.status(500).json({ error: 'Failed to generate insight.' });
     }
 });
 
-app.listen(5000, () => console.log('Server running on http://localhost:5000'));
+app.listen(5001, () => console.log('Server running on http://localhost:5001'));
