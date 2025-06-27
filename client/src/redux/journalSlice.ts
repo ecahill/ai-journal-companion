@@ -1,4 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { fetchInsight } from '../api/insightApi';
+import { RootState } from './store';
 
 interface Entry {
     id: number;
@@ -17,10 +19,14 @@ const initialState: JournalState = {
 export const generateInsight = createAsyncThunk(
     'journal/generateInsight',
     async (entryId: number, { getState, dispatch }) => {
-        // Simulate API delay
-        await new Promise((resolve) => setTimeout(resolve, 1500));
-        const fakeInsight = "This entry reflects a thoughtful moment of self-reflection.";
-        dispatch(setAiInsight({ entryId, aiInsight: fakeInsight }));
+        const state = getState() as RootState;
+        const entry = state.journal.entries.find(e => e.id === entryId);
+        if (!entry) {
+            return;
+        }
+
+        const aiInsight = await fetchInsight(entry.text);
+        dispatch(setAiInsight({ entryId: entryId, aiInsight: aiInsight }));
     }
 );
 

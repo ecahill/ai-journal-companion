@@ -28,7 +28,6 @@ const JournalEntryForm = () => {
             </form>
        </div>
     );
-
 };
 
 export default JournalEntryForm;
