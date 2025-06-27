@@ -19,6 +19,7 @@ const JournalEntryForm = () => {
     };
 
     return (
+        <div className='form-container'>
         <div className="journal-form">
             <form onSubmit={handleSubmit}>
                 <textarea value={text}
@@ -26,6 +27,7 @@ const JournalEntryForm = () => {
                 placeholder="Write your journal entry..." />
                 <button type="submit">Submit</button>
             </form>
+       </div>
        </div>
     );
 };
